@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  cloudflared-tunnel:
+    image: cloudflare/cloudflared
+    command: tunnel --url 172.17.0.1:8000
+  cloudflare_created:
+    build: .
+    command: sleep infinity
+    volumes:
+      - ./:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - cloudflared-tunnel
