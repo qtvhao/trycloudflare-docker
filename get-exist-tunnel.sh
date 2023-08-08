@@ -12,6 +12,8 @@ fi
 matcher=".trycloudflare.com"
 while true; do
     logs=$(docker compose -f $docker_compose_file -p $project_name logs cloudflared-tunnel)
+    # reverse lines in logs
+    logs=$(echo "$logs" | tac)
     echo "$logs" | grep -oP "Unauthorized" > /dev/null && echo "Unauthorized" && exit 1
     echo "$logs" | grep -oP '(?<=https://).*(?=.trycloudflare.com)' | head -n 1 > /dev/null
     if [ $? -eq 0 ]; then
