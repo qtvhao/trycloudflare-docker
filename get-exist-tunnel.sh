@@ -21,7 +21,7 @@ while true; do
         if [ -z "$TRYCLOUDFLARE_DOMAIN" ]; then
             continue;
         fi
-        echo "$TRYCLOUDFLARE_DOMAIN""$matcher"
+        echo "$TRYCLOUDFLARE_DOMAIN$matcher" | tr -d '[:space:]'
         break;
     else
         echo "Not ready yet..."
