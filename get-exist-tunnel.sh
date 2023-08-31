@@ -7,6 +7,7 @@ docker inspect -f '{{.State.Running}}' $tunnel_container >/dev/null
 if [ $? -eq 0 ]; then
     true
 else
+    docker rm -f $tunnel_container >/dev/null
     exit 1
 fi
 matcher=".trycloudflare.com"
