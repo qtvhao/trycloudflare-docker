@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   cloudflared-tunnel:
+    container_name: ${CONTAINER_NAME}
     image: cloudflare/cloudflared
     restart: unless-stopped
     command: tunnel --url ${ADDRESS}
@@ -9,5 +10,5 @@ services:
       - network1
 networks:
   network1:
-    name: ${NETWORK:-trycloudflare-docker}
+    name: ${NETWORK:-tryc}
     external: true
