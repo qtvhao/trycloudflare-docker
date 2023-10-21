@@ -5,3 +5,9 @@ services:
     image: cloudflare/cloudflared
     restart: unless-stopped
     command: tunnel --url ${ADDRESS}
+    networks:
+      - network1
+networks:
+  network1:
+    name: ${NETWORK}
+    external: true
