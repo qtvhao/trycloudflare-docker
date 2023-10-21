@@ -9,5 +9,5 @@ services:
       - network1
 networks:
   network1:
-    name: ${NETWORK}
+    name: ${NETWORK:-trycloudflare-docker}
     external: true
