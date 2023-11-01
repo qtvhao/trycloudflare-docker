@@ -2,6 +2,9 @@
 project_name="$1"
 docker_compose_file=$2
 NETWORK="$3"
+if [ -z "$project_name" ]; then
+    project_name="default"
+fi
 if [ -z "$docker_compose_file" ]; then
     docker_compose_file="docker-compose.yml"
 fi
