@@ -16,14 +16,18 @@ while true; do
     # reverse lines in logs
     logs=$(echo "$logs" | tac)
     echo "$logs" | grep -oE "Unauthorized" > /dev/null && echo "Unauthorized" && exit 1
-    echo $logs | grep -E "https://" | grep -E ".trycloudflare.com" | tr " " "\n" | grep -E "https://" | grep -E ".trycloudflare.com" | head -n 1 > /dev/null 2>&1
+    echo $logs | grep -E " https://" | grep -E ".trycloudflare.com" | tr " " "\n" | grep -E "https://" | grep -E ".trycloudflare.com" | head -n 1 > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        TRYCLOUDFLARE_DOMAIN="$(echo $logs | grep -E "https://" | grep -E ".trycloudflare.com" | tr " " "\n" | grep -E "https://" | grep -E ".trycloudflare.com" | head -n 1)"
-        if [ -z "$TRYCLOUDFLARE_DOMAIN" ]; then
-            continue;
-        fi
-        echo "$TRYCLOUDFLARE_DOMAIN" | tr -d '[:space:]'
-        break;
+        TRYCLOUDFLARE_DOMAIN="$(echo $logs | tr " " "\n" | grep "https" | grep ".trycloudflare.com")"
+        for line in $TRYCLOUDFLARE_DOMAIN; do
+            FOUR_CHARACTERS_FROM_BEGINNING=$(echo "$line" | cut -c1-5)
+            if [ "$FOUR_CHARACTERS_FROM_BEGINNING" = "https" ]; then
+                line=$(echo "$line" | cut -c9-)
+                echo "$line"
+                exit 0
+            fi
+        done
+        echo "$TRYCLOUDFLARE_DOMAIN"
     else
         echo "Not ready yet..."
         sleep 1
