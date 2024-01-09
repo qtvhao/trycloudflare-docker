@@ -1,4 +1,4 @@
-set -e -o pipefail
+set -xe -o pipefail
 docker_compose_file="$1"
 project_name="$2"
 

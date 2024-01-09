@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -o pipefail
+set -xe -o pipefail
 project_name="$1"
 docker_compose_file=$2
 NETWORK="$3"
