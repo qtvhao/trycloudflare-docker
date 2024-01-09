@@ -12,8 +12,9 @@ if [ -z "$CONTAINER_NAME" ]; then
     CONTAINER_NAME="tryc-$project_name"
 fi
 export CONTAINER_NAME="$CONTAINER_NAME"
-echo "docker_compose_file: $docker_compose_file"
-echo "project_name: $project_name"
+echo "docker_compose_file: $docker_compose_file" >&2
+echo "project_name: $project_name" >&2
 logs=$(docker compose -f $docker_compose_file -p $project_name logs cloudflared-tunnel)
-echo "$logs" | grep -oE "Unauthorized" > /dev/null && /bin/sh reset-tunnel.sh "$docker_compose_file" "$project_name"
-docker compose -f $docker_compose_file -p $project_name up -d > /dev/null
+echo "$logs" | grep -oE "Unauthorized" >&2 && /bin/sh reset-tunnel.sh "$docker_compose_file" "$project_name"
+echo "Starting tunnel..." >&2
+docker compose -f $docker_compose_file -p $project_name up -d >&2
