@@ -4,7 +4,6 @@ services:
   cloudflared-tunnel:
     container_name: ${CONTAINER_NAME}
     image: cloudflare/cloudflared
-    restart: unless-stopped
     command: tunnel --url ${ADDRESS}
     networks:
       - network1

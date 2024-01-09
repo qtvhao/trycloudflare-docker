@@ -14,8 +14,8 @@ matcher=".trycloudflare.com"
 logs=$(docker compose -f $docker_compose_file -p $project_name logs cloudflared-tunnel) || true
 # reverse lines in logs
 logs=$(echo "$logs" | tac)
-echo "$logs" | grep -oE "failed to unmarshal quick" && docker compose -f $docker_compose_file -p $project_name down cloudflared-tunnel && echo "failed to unmarshal quick" && sleep 6 && exit 1
-echo "$logs" | grep -oE "Unauthorized" > /dev/null && echo "Unauthorized" && exit 1
+echo "$logs" | grep -oE "failed to unmarshal quick" && echo "failed to unmarshal quick" && sleep 6 && /bin/sh reset-tunnel.sh "$docker_compose_file" "$project_name" && exit 1
+echo "$logs" | grep -oE "Unauthorized" >&2 && echo "Unauthorized" && exit 1
 echo $logs | grep -E " https://" | grep -E ".trycloudflare.com" | tr " " "\n" | grep -E "https://" | grep -E ".trycloudflare.com" | head -n 1 >&2 || (sleep 6 && continue)
 # if [ $? -eq 0 ]; then
 TRYCLOUDFLARE_DOMAIN="$(echo $logs | tr " " "\n" | grep "https" | grep ".trycloudflare.com")" || (sleep 6 && continue)

@@ -17,4 +17,4 @@ echo "project_name: $project_name" >&2
 logs=$(docker compose -f $docker_compose_file -p $project_name logs cloudflared-tunnel)
 echo "$logs" | grep -oE "Unauthorized" >&2 && /bin/sh reset-tunnel.sh "$docker_compose_file" "$project_name"
 echo "Starting tunnel..." >&2
-docker compose -f $docker_compose_file -p $project_name up -d >&2
+docker compose -f $docker_compose_file -p $project_name up -d >&2 || true

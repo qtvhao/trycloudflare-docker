@@ -18,4 +18,4 @@ COPY start-tunnel.sh /app/start-tunnel.sh
 COPY docker-compose.yml /app/docker-compose.yml
 RUN chmod +x /app/*.sh
 
-ENTRYPOINT [ "/bin/sh", "-c", "/bin/sh /app/get-tunnel.sh 2>/tmp/tunnel.log" ]
+ENTRYPOINT [ "/bin/sh", "/app/get-tunnel.sh" ]
