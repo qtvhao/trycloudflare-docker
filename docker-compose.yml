@@ -9,5 +9,5 @@ services:
       - network1
 networks:
   network1:
-    name: ${NETWORK:-tryc}
+    name: ${NETWORK:-tryc}_default
     external: true
