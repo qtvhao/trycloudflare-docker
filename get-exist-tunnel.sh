@@ -2,12 +2,11 @@ set -xeo pipefail
 docker_compose_file="$1"
 project_name="$2"
 
-tunnel_container=`docker ps -q --filter "name=$CONTAINER_NAME"
-docker inspect -f '{{.State.Running}}' $tunnel_container >&2 || true
+docker inspect -f '{{.State.Running}}' $CONTAINER_NAME >&2 || true
 if [ $? -eq 0 ]; then
     true
 else
-    docker rm -f $tunnel_container >&2 || true
+    docker rm -f $CONTAINER_NAME >&2 || true
     exit 1
 fi
 matcher=".trycloudflare.com"
