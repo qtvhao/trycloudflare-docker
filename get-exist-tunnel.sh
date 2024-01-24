@@ -2,7 +2,7 @@ set -xeo pipefail
 docker_compose_file="$1"
 project_name="$2"
 
-docker inspect -f '{{.State.Running}}' $CONTAINER_NAME >&2 || true
+docker inspect -f '{{.State.Running}}' $CONTAINER_NAME >&2
 if [ $? -eq 0 ]; then
     true
 else
@@ -11,8 +11,7 @@ else
 fi
 matcher=".trycloudflare.com"
 
-logs=$(docker logs $CONTAINER_NAME) || true
-# reverse lines in logs
+logs=$(docker logs $CONTAINER_NAME 2>&1)
 logs=$(echo "$logs" | tac)
 echo "$logs" | grep -oE "failed to unmarshal quick" && echo "failed to unmarshal quick" && sleep 6 && /bin/sh reset-tunnel.sh "$docker_compose_file" "$project_name" && exit 1
 echo "$logs" | grep -oE "Unauthorized" >&2 && echo "Unauthorized" && exit 1
