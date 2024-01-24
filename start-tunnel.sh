@@ -14,7 +14,8 @@ fi
 export CONTAINER_NAME="$CONTAINER_NAME"
 echo "docker_compose_file: $docker_compose_file" >&2
 echo "project_name: $project_name" >&2
-logs=$(docker compose -f $docker_compose_file -p $project_name logs cloudflared-tunnel)
+logs=$(docker logs $CONTAINER_NAME) || true
 echo "$logs" | grep -oE "Unauthorized" >&2 && /bin/sh reset-tunnel.sh "$docker_compose_file" "$project_name"
 echo "Starting tunnel..." >&2
-docker compose -f $docker_compose_file -p $project_name up -d >&2 || true
+
+docker run -d --name $CONTAINER_NAME --network ${NETWORK:-tryc}_default cloudflare/cloudflared:2023.10.0 tunnel --url ${ADDRESS} >&2 || true

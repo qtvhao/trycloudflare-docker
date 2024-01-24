@@ -2,7 +2,7 @@ set -xeo pipefail
 docker_compose_file="$1"
 project_name="$2"
 
-tunnel_container=$(docker compose -f $docker_compose_file -p $project_name ps -q cloudflared-tunnel)
+tunnel_container=`docker ps -q --filter "name=$CONTAINER_NAME"
 docker inspect -f '{{.State.Running}}' $tunnel_container >&2 || true
 if [ $? -eq 0 ]; then
     true
@@ -11,7 +11,8 @@ else
     exit 1
 fi
 matcher=".trycloudflare.com"
-logs=$(docker compose -f $docker_compose_file -p $project_name logs cloudflared-tunnel) || true
+
+logs=$(docker logs $CONTAINER_NAME) || true
 # reverse lines in logs
 logs=$(echo "$logs" | tac)
 echo "$logs" | grep -oE "failed to unmarshal quick" && echo "failed to unmarshal quick" && sleep 6 && /bin/sh reset-tunnel.sh "$docker_compose_file" "$project_name" && exit 1
