@@ -3,7 +3,7 @@ version: '3.9'
 services:
   cloudflared-tunnel:
     container_name: ${CONTAINER_NAME}
-    image: cloudflare/cloudflared:2023.10.0
+    image: cloudflare/cloudflared:2024.3.0
     command: tunnel --url ${ADDRESS}
     networks:
       - network1
