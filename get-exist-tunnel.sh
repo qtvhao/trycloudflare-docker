@@ -24,8 +24,8 @@ for line in $TRYCLOUDFLARE_DOMAIN; do
         line=$(echo "$line" | cut -c9-)
         line=`echo $line | sed 's/[^[:print:]\r\t]//g' | sed 's/\[2K//g'`
         echo "$line"
-        mkdir -p /output || true
-        echo "$line" > /output/trycloudflare-domain-$project_name.txt
+        mkdir -p /output/$project_name/
+        echo "$line" > /output/$project_name/$CONTAINER_NAME.txt
         exit 0
     fi
 done
