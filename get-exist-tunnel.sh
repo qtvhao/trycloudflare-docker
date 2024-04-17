@@ -22,6 +22,7 @@ for line in $TRYCLOUDFLARE_DOMAIN; do
     FOUR_CHARACTERS_FROM_BEGINNING=$(echo "$line" | cut -c1-5)
     if [ "$FOUR_CHARACTERS_FROM_BEGINNING" = "https" ]; then
         line=$(echo "$line" | cut -c9-)
+        line=`echo $line | sed 's/[^[:print:]\r\t]//g' | sed 's/\[2K//g'`
         echo "$line"
         exit 0
     fi
